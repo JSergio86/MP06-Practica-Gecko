@@ -14,10 +14,11 @@ public class Main {
   public static void main(String[] args) throws IOException {
     Scrapping scrapping = new Scrapping();
 
-    String nombre = "Trvpleitos";
-    String hastag = "AVE";
+    String nombre = "Sergio";
+    String hastag = "4720";
 
-    scrapping.URL(nombre, hastag);
+    //scrapping.URL(nombre, hastag);
+    //scrapping.Armas(nombre, hastag);
     scrapping.Armas(nombre, hastag);
 
 
