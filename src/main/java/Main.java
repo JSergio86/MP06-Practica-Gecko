@@ -19,7 +19,9 @@ public class Main {
 
     //scrapping.URL(nombre, hastag);
     //scrapping.Armas(nombre, hastag);
-    scrapping.Armas(nombre, hastag);
+    //scrapping.Mapas(nombre, hastag);
+    scrapping.Partidas(nombre, hastag);
+    //scrapping.Agentes(nombre, hastag);
 
 
 
