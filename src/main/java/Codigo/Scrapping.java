@@ -62,7 +62,7 @@ public class Scrapping {
 
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/overview";
 
-        //URL donde entrara a cojer la información
+        //URL donde entrara a cojer la información de la pagina
         driver.get(baseUrl);
 
         //Selección de los webelement para pillar la información
