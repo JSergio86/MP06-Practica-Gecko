@@ -10,4 +10,4 @@ Hay un metodo que permite ejecutar todos los demas metodos y se pueden ver todas
 
 Video de demostración: https://drive.google.com/file/d/1PayReVo2Xy2S6Xvb_UnFAs11nJzVr7Vv/view?usp=sharing
 
-https://github.com/JSergio86/MP06-Practica-Gecko/blob/master/DIagrama/Diagrama.png
+Diagrama: https://github.com/JSergio86/MP06-Practica-Gecko/blob/master/DIagrama/Diagrama.png
