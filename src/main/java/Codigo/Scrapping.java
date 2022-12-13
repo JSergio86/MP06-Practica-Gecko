@@ -1,3 +1,5 @@
+package Codigo;
+
 import Objetos.*;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -23,7 +25,7 @@ public class Scrapping {
     WebDriver driver;
 
     /**
-     * Constructor para poder Scrappear
+     * Constructor que permite poder Scrappear
      * @throws IOException
      */
     public Scrapping() throws IOException {
@@ -32,7 +34,14 @@ public class Scrapping {
         driver = new FirefoxDriver(options);
     }
 
-    public void Todo(String nombre, String hastag) throws IOException {
+    /**
+     * Metodo que permite mirar todas las estadisticas del jugador, agente, mapa, arma y partida .
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas.
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas.
+     * @throws IOException
+     */
+
+    public void VerTodasLasStats(String nombre, String hastag) throws IOException {
         Jugador(nombre, hastag);
         Armas(nombre, hastag);
         Mapas(nombre, hastag);
@@ -67,10 +76,8 @@ public class Scrapping {
             WebElement statRank= driver.findElement(By.className("highlighted__content"));
             List<WebElement> columnasRank= statRank.findElements(By.className("stat__value"));
 
+            //añadir en la lista el objeto que hemos creado con la información
             listaStats.add(new Jugador(columnasRank.get(0).getText(),columnasStats.get(0).getText(), columnasStats.get(1).getText(), columnasStats.get(2).getText(), columnasStats.get(3).getText(), columnasStats.get(4).getText(), columnasStats.get(5).getText(), columnasStats.get(6).getText(), columnasStats.get(7).getText(), columnasStats.get(8).getText(), columnasStats.get(9).getText(), columnasStats.get(10).getText(), columnasStats.get(11).getText()));
-            //listaStats.add(new Jugadores(columnasRank.get(0).getText(),columnasStats.get(0).getText(), columnasStats.get(1).getText(), columnasStats.get(2).getText()));
-
-            //System.out.println(new Jugadores(columnasRank.get(0).getText(),columnasStats.get(0).getText(), columnasStats.get(1).getText(), columnasStats.get(2).getText(), columnasStats.get(3).getText(), columnasStats.get(4).getText(), columnasStats.get(5).getText(), columnasStats.get(6).getText(), columnasStats.get(7).getText(), columnasStats.get(8).getText(), columnasStats.get(9).getText(), columnasStats.get(10).getText(), columnasStats.get(11).getText()));
 
         }
 
@@ -98,21 +105,11 @@ public class Scrapping {
 
     }
 
-/* bufferedWriter.write("Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless,Aces\n ");
-
-        for (int x = 0; x < statsMain.size(); x++) {
-            String tmpStat = statsMain.get(x).getText();
-            bufferedWriter.write(tmpStat + ", ");
-        }
-
-        bufferedWriter.close();
-
-        */
 
     /**
      * Metodo que permite ver las estadisticas de lar armas.
-     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas.
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas.
      * @throws IOException
      */
     public void Armas(String nombre, String hastag) throws IOException {
@@ -154,8 +151,8 @@ public class Scrapping {
 
     /**
      * Metodo que permite ver las estadisticas de los jugadores en cada mapa.
-     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas.
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas.
      * @throws IOException
      */
 
@@ -198,8 +195,8 @@ public class Scrapping {
 
     /**
      * Metodo que permite ver las estadisticas de los jugadores de cada partida.
-     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag  Hashtag del usuario del cual queremos ver las estadisticas
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas.
+     * @param hastag  Hashtag del usuario del cual queremos ver las estadisticas.
      * @throws IOException
      */
 
@@ -214,7 +211,8 @@ public class Scrapping {
 
         List<Partida> listaStatsMapas = new ArrayList<>();
 
-        for (int i=0; i<8;i++) {
+        //Permite ver las ultimas 10 partidas
+        for (int i=0; i<10;i++) {
             List<WebElement> nameMatch = driver.findElements(By.className("match__name"));
             List<WebElement> nameScore = driver.findElements(By.className("match__score"));
             List<WebElement> nameType = driver.findElements(By.className("match__subtitle"));
@@ -246,8 +244,8 @@ public class Scrapping {
 
     /**
      * Metodo que permite ver las estadisticas de cada jugador de sus agentes.
-     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas.
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas.
      * @throws IOException
      */
     public void Agentes(String nombre, String hastag) throws IOException {
