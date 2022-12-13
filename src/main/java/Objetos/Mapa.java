@@ -1,6 +1,6 @@
 package Objetos;
 
-public class Mapas {
+public class Mapa {
     String name;
     String win;
     String wins;
@@ -9,10 +9,10 @@ public class Mapas {
     String ADR;
     String ACS;
 
-    public Mapas() {
+    public Mapa() {
     }
 
-    public Mapas(String name, String win, String wins, String losses, String KD, String ADR, String ACS) {
+    public Mapa(String name, String win, String wins, String losses, String KD, String ADR, String ACS) {
         this.name = name;
         this.win = win;
         this.wins = wins;

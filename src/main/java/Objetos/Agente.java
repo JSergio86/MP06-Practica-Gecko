@@ -1,6 +1,6 @@
 package Objetos;
 
-public class Agentes {
+public class Agente {
     String name;
     String type;
     String timePlayed;
@@ -12,7 +12,7 @@ public class Agentes {
     String HS;
     String KAST;
 
-    public Agentes(String name, String type, String timePlayed, String matches, String win, String KD, String ADR, String ACS, String HS, String KAST) {
+    public Agente(String name, String type, String timePlayed, String matches, String win, String KD, String ADR, String ACS, String HS, String KAST) {
         this.name = name;
         this.type = type;
         this.timePlayed = timePlayed;

@@ -1,6 +1,7 @@
 package Objetos;
 
-public class Jugadores {
+public class Jugador {
+    String rank;
     String wins;
     String kills;
     String deaths;
@@ -14,7 +15,8 @@ public class Jugadores {
     String flawless;
     String aces;
 
-    public Jugadores(String wins, String kills, String deaths, String assists, String scoreRound, String KAD, String killsRounds, String plants, String firstBloods, String clutches, String flawless, String aces) {
+    public Jugador(String rank,String wins, String kills, String deaths, String assists, String scoreRound, String KAD, String killsRounds, String plants, String firstBloods, String clutches, String flawless, String aces) {
+        this.rank=rank;
         this.wins = wins;
         this.kills = kills;
         this.deaths = deaths;
@@ -29,14 +31,64 @@ public class Jugadores {
         this.aces = aces;
     }
 
-    public Jugadores(String wins) {
-        this.wins=wins;
+
+    public String getRank() {
+        return rank;
+    }
+
+    public String getWins() {
+        return wins;
+    }
+
+    public String getKills() {
+        return kills;
+    }
+
+    public String getDeaths() {
+        return deaths;
+    }
+
+    public String getAssists() {
+        return assists;
+    }
+
+    public String getScoreRound() {
+        return scoreRound;
+    }
+
+    public String getKAD() {
+        return KAD;
+    }
+
+    public String getKillsRounds() {
+        return killsRounds;
+    }
+
+    public String getPlants() {
+        return plants;
+    }
+
+    public String getFirstBloods() {
+        return firstBloods;
+    }
+
+    public String getClutches() {
+        return clutches;
+    }
+
+    public String getFlawless() {
+        return flawless;
+    }
+
+    public String getAces() {
+        return aces;
     }
 
     @Override
     public String toString() {
         return "Jugadores{" +
-                "wins='" + wins + '\'' +
+                "rank='" + rank + '\'' +
+                ", wins='" + wins + '\'' +
                 ", kills='" + kills + '\'' +
                 ", deaths='" + deaths + '\'' +
                 ", assists='" + assists + '\'' +

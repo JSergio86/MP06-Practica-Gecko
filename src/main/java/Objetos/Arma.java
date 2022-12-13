@@ -1,6 +1,6 @@
 package Objetos;
 
-public class Armas {
+public class Arma {
     String name;
     String type;
     String kills;
@@ -10,9 +10,9 @@ public class Armas {
     String kills_round;
     String longest_kill;
 
-    public  Armas(){}
+    public  Arma(){}
 
-    public Armas(String name, String type, String kills, String deaths, String headshots, String damage_round, String kills_round, String longest_kill) {
+    public Arma(String name, String type, String kills, String deaths, String headshots, String damage_round, String kills_round, String longest_kill) {
         this.name = name;
         this.type = type;
         this.kills = kills;

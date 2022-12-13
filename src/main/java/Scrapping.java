@@ -22,54 +22,83 @@ public class Scrapping {
 
     WebDriver driver;
 
+    /**
+     * Constructor para poder Scrappear
+     * @throws IOException
+     */
     public Scrapping() throws IOException {
         System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver");
         FirefoxOptions options = new FirefoxOptions();
         driver = new FirefoxDriver(options);
     }
 
+    public void Todo(String nombre, String hastag) throws IOException {
+        Jugador(nombre, hastag);
+        Armas(nombre, hastag);
+        Mapas(nombre, hastag);
+        Partidas(nombre, hastag);
+        Agentes(nombre, hastag);
+
+    }
     /**
-     * Metodo que permite ver las estadisticas del jugador.
+     * Metodo que permite ver las estadisticas generales del jugador.
      *
      * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag Hastag del usuario del cual queremos ver las estadisticas
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
      * @throws IOException
      */
+
+
     public void Jugador(String nombre, String hastag) throws IOException {
 
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/overview";
 
+        //URL donde entrara a cojer la información
         driver.get(baseUrl);
 
+        //Selección de los webelement para pillar la información
         WebElement lista = driver.findElement(By.className("main"));
         ArrayList<WebElement> filasStat = (ArrayList<WebElement>) lista.findElements(By.className("stat"));
-        List<Jugadores> listaStats = new ArrayList<>();
 
-        for (int i=0; i<13;i++) {
-            List<WebElement> columnasStats= driver.findElements(By.className("value"));
-            //listaStats.add(new Jugadores( columnasStats.get(1).getText(), columnasStats.get(2).getText(), columnasStats.get(3).getText(), columnasStats.get(4).getText(), columnasStats.get(5).getText(), columnasStats.get(6).getText(), columnasStats.get(7).getText(), columnasStats.get(8).getText(), columnasStats.get(9).getText(), columnasStats.get(10).getText(), columnasStats.get(11).getText(), columnasStats.get(12).getText()));
-            listaStats.add(new Jugadores( columnasStats.get(i).getText()));
+        List<Jugador> listaStats = new ArrayList<>();
+
+        for (int i=0; i<1;i++) {
+            List<WebElement> columnasStats= lista.findElements(By.className("value"));
+            WebElement statRank= driver.findElement(By.className("highlighted__content"));
+            List<WebElement> columnasRank= statRank.findElements(By.className("stat__value"));
+
+            listaStats.add(new Jugador(columnasRank.get(0).getText(),columnasStats.get(0).getText(), columnasStats.get(1).getText(), columnasStats.get(2).getText(), columnasStats.get(3).getText(), columnasStats.get(4).getText(), columnasStats.get(5).getText(), columnasStats.get(6).getText(), columnasStats.get(7).getText(), columnasStats.get(8).getText(), columnasStats.get(9).getText(), columnasStats.get(10).getText(), columnasStats.get(11).getText()));
+            //listaStats.add(new Jugadores(columnasRank.get(0).getText(),columnasStats.get(0).getText(), columnasStats.get(1).getText(), columnasStats.get(2).getText()));
+
+            //System.out.println(new Jugadores(columnasRank.get(0).getText(),columnasStats.get(0).getText(), columnasStats.get(1).getText(), columnasStats.get(2).getText(), columnasStats.get(3).getText(), columnasStats.get(4).getText(), columnasStats.get(5).getText(), columnasStats.get(6).getText(), columnasStats.get(7).getText(), columnasStats.get(8).getText(), columnasStats.get(9).getText(), columnasStats.get(10).getText(), columnasStats.get(11).getText()));
+
         }
+
+        //Permite escribir el fichero CSV estructuradamente
 
         try (FileWriter writer = new FileWriter("SalidasCSV/EstadisticasJugador.csv")) {
             ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Jugadores.class);
+            mappingStrategy.setType(Jugador.class);
 
-            String[] columns = {"Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless, Aces"};
+            String[] columns = {"rank, wins, kills, deaths, assists, scoreRound, KAD, killsRounds, plants, firstBloods, clutches, flawless, aces"};
             mappingStrategy.setColumnMapping(columns);
-            writer.write("\"name\",\"type\",\"kills\",\"deaths\",\"headshots\",\"damage_round\",\"kills_round\",\"longest_kill\"\n");
+            writer.write("\"rank\",\"wins\",\"kills\",\"deaths\",\"assists\",\"scoreRound\",\"KAD\",\"killsRounds\",\"plants\",\"firstBloods\",\"clutches\",\"flawless\",\"aces\"\n");
 
             StatefulBeanToCsv beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withMappingStrategy(mappingStrategy)
                     .build();
-            beanWriter.write(listaStats);
-        } catch (CsvRequiredFieldEmptyException e) {
-            throw new RuntimeException(e);
-        } catch (CsvDataTypeMismatchException e) {
-            throw new RuntimeException(e);
+            for(int i=0; i< listaStats.size();i++){
+                writer.write(listaStats.get(i).getRank()+", "+listaStats.get(i).getWins()+", "+listaStats.get(i).getKills()+", "+listaStats.get(i).getDeaths()+", " +
+                        ""+listaStats.get(i).getAssists()+", "+listaStats.get(i).getScoreRound()+", "+listaStats.get(i).getKAD()+", "+listaStats.get(i).getKillsRounds()+", "+listaStats.get(i).getPlants()
+                        +", "+listaStats.get(i).getFirstBloods()+", "+listaStats.get(i).getClutches()+", "+listaStats.get(i).getFlawless()+", "+listaStats.get(i).getAces());
+            }
+         // No funciona beanWriter.write(listaStats);
         }
 
-       /* bufferedWriter.write("Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless,Aces\n ");
+
+    }
+
+/* bufferedWriter.write("Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless,Aces\n ");
 
         for (int x = 0; x < statsMain.size(); x++) {
             String tmpStat = statsMain.get(x).getText();
@@ -80,16 +109,12 @@ public class Scrapping {
 
         */
 
-    }
-
     /**
-     * Metodo que permite ver las estadisticas de cada arma.
-     *
+     * Metodo que permite ver las estadisticas de lar armas.
      * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag Hastag del usuario del cual queremos ver las estadisticas
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
      * @throws IOException
      */
-
     public void Armas(String nombre, String hastag) throws IOException {
 
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/weapons";
@@ -100,17 +125,17 @@ public class Scrapping {
         WebElement listaArmas = driver.findElement(By.className("segment-used__table"));
         WebElement armas = listaArmas.findElement(By.tagName("tbody"));
         ArrayList<WebElement> filasArmas = (ArrayList<WebElement>) armas.findElements(By.tagName("tr"));
-        List<Armas> listaStatsArmas = new ArrayList<>();
+        List<Arma> listaStatsArmas = new ArrayList<>();
 
         for (WebElement stat : filasArmas) {
             List<WebElement> columnasArmas = stat.findElements(By.tagName("td"));
             List<String> arma_y_tipo = List.of(columnasArmas.get(0).getText().split("\n"));
-            listaStatsArmas.add(new Armas(arma_y_tipo.get(0), arma_y_tipo.get(1), columnasArmas.get(1).getText(), columnasArmas.get(2).getText(), columnasArmas.get(3).getText(), columnasArmas.get(4).getText(), columnasArmas.get(5).getText(), columnasArmas.get(6).getText()));
+            listaStatsArmas.add(new Arma(arma_y_tipo.get(0), arma_y_tipo.get(1), columnasArmas.get(1).getText(), columnasArmas.get(2).getText(), columnasArmas.get(3).getText(), columnasArmas.get(4).getText(), columnasArmas.get(5).getText(), columnasArmas.get(6).getText()));
         }
 
         try (FileWriter writer = new FileWriter("SalidasCSV/EstadisticasWeapons.csv")) {
             ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Armas.class);
+            mappingStrategy.setType(Arma.class);
 
             String[] columns = {"name", "type", "kills", "deaths", "headshots", "damage_round", "kills_round", "longest_kill"};
             mappingStrategy.setColumnMapping(columns);
@@ -127,6 +152,13 @@ public class Scrapping {
         }
     }
 
+    /**
+     * Metodo que permite ver las estadisticas de los jugadores en cada mapa.
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
+     * @throws IOException
+     */
+
     public void Mapas(String nombre, String hastag) throws IOException {
 
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/maps";
@@ -136,16 +168,16 @@ public class Scrapping {
         WebElement listaMapas = driver.findElement(By.className("st-content__category"));
         ArrayList<WebElement> statsMapas = (ArrayList<WebElement>) listaMapas.findElements(By.className("st-content__item"));
 
-        List<Mapas> listaStatsMapas = new ArrayList<>();
+        List<Mapa> listaStatsMapas = new ArrayList<>();
 
         for (WebElement stat : statsMapas) {
             List<WebElement> columnasMapas = stat.findElements(By.className("st-content__item-value"));
-            listaStatsMapas.add(new Mapas(columnasMapas.get(0).getText(), columnasMapas.get(1).getText(), columnasMapas.get(2).getText(), columnasMapas.get(3).getText(), columnasMapas.get(4).getText(), columnasMapas.get(5).getText(), columnasMapas.get(6).getText()));
+            listaStatsMapas.add(new Mapa(columnasMapas.get(0).getText(), columnasMapas.get(1).getText(), columnasMapas.get(2).getText(), columnasMapas.get(3).getText(), columnasMapas.get(4).getText(), columnasMapas.get(5).getText(), columnasMapas.get(6).getText()));
         }
 
         try (FileWriter writer = new FileWriter("SalidasCSV/EstadisticasMapas.csv")) {
             ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Mapas.class);
+            mappingStrategy.setType(Mapa.class);
 
             String[] columns = {"name", "win", "wins", "losses", "KD", "ADR", "ACS",};
             mappingStrategy.setColumnMapping(columns);
@@ -164,6 +196,13 @@ public class Scrapping {
         }
     }
 
+    /**
+     * Metodo que permite ver las estadisticas de los jugadores de cada partida.
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
+     * @param hastag  Hashtag del usuario del cual queremos ver las estadisticas
+     * @throws IOException
+     */
+
     public void Partidas(String nombre, String hastag) throws IOException {
 
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/matches?playlist=competitive";
@@ -173,19 +212,19 @@ public class Scrapping {
         WebElement lista = driver.findElement(By.className("trn-grid"));
         ArrayList<WebElement> statsPartidas = (ArrayList<WebElement>) lista.findElements(By.className("trn-gamereport-list__group"));
 
-        List<Partidas> listaStatsMapas = new ArrayList<>();
+        List<Partida> listaStatsMapas = new ArrayList<>();
 
         for (int i=0; i<8;i++) {
             List<WebElement> nameMatch = driver.findElements(By.className("match__name"));
             List<WebElement> nameScore = driver.findElements(By.className("match__score"));
             List<WebElement> nameType = driver.findElements(By.className("match__subtitle"));
 
-            listaStatsMapas.add(new Partidas(nameMatch.get(i).getText(),nameType.get(i).getText() ,nameScore.get(i).getText()));
+            listaStatsMapas.add(new Partida(nameMatch.get(i).getText(),nameType.get(i).getText() ,nameScore.get(i).getText()));
         }
 
         try (FileWriter writer = new FileWriter("SalidasCSV/EstadisticasPartidas.csv")) {
             ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Partidas.class);
+            mappingStrategy.setType(Partida.class);
 
             String[] columns = {"nameMap", "type", "result"};
             mappingStrategy.setColumnMapping(columns);
@@ -204,6 +243,13 @@ public class Scrapping {
 
 
     }
+
+    /**
+     * Metodo que permite ver las estadisticas de cada jugador de sus agentes.
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
+     * @throws IOException
+     */
     public void Agentes(String nombre, String hastag) throws IOException {
 
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/agents";
@@ -213,17 +259,17 @@ public class Scrapping {
         WebElement listAgentes = driver.findElement(By.className("st-content__category"));
         ArrayList<WebElement> statsAgentes = (ArrayList<WebElement>) listAgentes.findElements(By.className("st-content__item"));
 
-        List<Agentes> listaStatsAgentes = new ArrayList<>();
+        List<Agente> listaStatsAgentes = new ArrayList<>();
 
         for (WebElement stat : statsAgentes) {
             List<WebElement> columnasAgentes = stat.findElements(By.className("st-content__item-value"));
             List<String> agente_y_tipo = List.of(columnasAgentes.get(0).getText().split("\n"));
-            listaStatsAgentes.add(new Agentes(agente_y_tipo.get(0), agente_y_tipo.get(1), columnasAgentes.get(1).getText(), columnasAgentes.get(2).getText(), columnasAgentes.get(3).getText(), columnasAgentes.get(4).getText(), columnasAgentes.get(5).getText(), columnasAgentes.get(6).getText(), columnasAgentes.get(7).getText(), columnasAgentes.get(8).getText()));
+            listaStatsAgentes.add(new Agente(agente_y_tipo.get(0), agente_y_tipo.get(1), columnasAgentes.get(1).getText(), columnasAgentes.get(2).getText(), columnasAgentes.get(3).getText(), columnasAgentes.get(4).getText(), columnasAgentes.get(5).getText(), columnasAgentes.get(6).getText(), columnasAgentes.get(7).getText(), columnasAgentes.get(8).getText()));
         }
 
         try (FileWriter writer = new FileWriter("SalidasCSV/EstadisticasAgentes.csv")) {
             ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Agentes.class);
+            mappingStrategy.setType(Agente.class);
 
             String[] columns = {"name", "type", "timePlayed", "matches", "win", "KD", "ADR","ACS", "HS", "KAST"};
             mappingStrategy.setColumnMapping(columns);
