@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"Objetos","l":"Agente"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"Objetos","l":"Arma"},{"p":"Objetos","l":"Jugador"},{"p":"Codigo","l":"Main"},{"p":"Objetos","l":"Mapa"},{"p":"Objetos","l":"Partida"},{"p":"Codigo","l":"Scrapping"}];updateSearchResults();
