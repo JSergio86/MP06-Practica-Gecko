@@ -17,10 +17,10 @@ public class Main {
     String nombre = "Sergio";
     String hastag = "4720";
 
-    //scrapping.URL(nombre, hastag);
+    scrapping.Jugador(nombre, hastag);
     //scrapping.Armas(nombre, hastag);
     //scrapping.Mapas(nombre, hastag);
-    scrapping.Partidas(nombre, hastag);
+    //scrapping.Partidas(nombre, hastag);
     //scrapping.Agentes(nombre, hastag);
 
 

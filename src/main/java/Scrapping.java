@@ -1,7 +1,4 @@
-import Objetos.Agentes;
-import Objetos.Armas;
-import Objetos.Mapas;
-import Objetos.Partidas;
+import Objetos.*;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -38,20 +35,41 @@ public class Scrapping {
      * @param hastag Hastag del usuario del cual queremos ver las estadisticas
      * @throws IOException
      */
-    public void URL(String nombre, String hastag) throws IOException {
-        FileWriter fileWriter = new FileWriter("src/Estadisticas.csv");
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+    public void Jugador(String nombre, String hastag) throws IOException {
+
         String baseUrl = "https://tracker.gg/valorant/profile/riot/" + nombre + "%23" + hastag + "/overview";
 
         driver.get(baseUrl);
-        WebElement highLightedContent = driver.findElement(By.className("highlighted__content"));
-        WebElement stats = highLightedContent.findElement(By.className("stat"));
 
+        WebElement lista = driver.findElement(By.className("main"));
+        ArrayList<WebElement> filasStat = (ArrayList<WebElement>) lista.findElements(By.className("stat"));
+        List<Jugadores> listaStats = new ArrayList<>();
 
-        WebElement main = driver.findElement(By.className("main"));
-        ArrayList<WebElement> statsMain = (ArrayList<WebElement>) main.findElements(By.className("value"));
+        for (int i=0; i<13;i++) {
+            List<WebElement> columnasStats= driver.findElements(By.className("value"));
+            //listaStats.add(new Jugadores( columnasStats.get(1).getText(), columnasStats.get(2).getText(), columnasStats.get(3).getText(), columnasStats.get(4).getText(), columnasStats.get(5).getText(), columnasStats.get(6).getText(), columnasStats.get(7).getText(), columnasStats.get(8).getText(), columnasStats.get(9).getText(), columnasStats.get(10).getText(), columnasStats.get(11).getText(), columnasStats.get(12).getText()));
+            listaStats.add(new Jugadores( columnasStats.get(i).getText()));
+        }
 
-        bufferedWriter.write("Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless,Aces\n ");
+        try (FileWriter writer = new FileWriter("SalidasCSV/EstadisticasJugador.csv")) {
+            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+            mappingStrategy.setType(Jugadores.class);
+
+            String[] columns = {"Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless, Aces"};
+            mappingStrategy.setColumnMapping(columns);
+            writer.write("\"name\",\"type\",\"kills\",\"deaths\",\"headshots\",\"damage_round\",\"kills_round\",\"longest_kill\"\n");
+
+            StatefulBeanToCsv beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withMappingStrategy(mappingStrategy)
+                    .build();
+            beanWriter.write(listaStats);
+        } catch (CsvRequiredFieldEmptyException e) {
+            throw new RuntimeException(e);
+        } catch (CsvDataTypeMismatchException e) {
+            throw new RuntimeException(e);
+        }
+
+       /* bufferedWriter.write("Wins, Kills, Deaths, Assists, Score/Round, KAD Ratio, Kills/Round,Plants, First Bloods, Clutches, Flawless,Aces\n ");
 
         for (int x = 0; x < statsMain.size(); x++) {
             String tmpStat = statsMain.get(x).getText();
@@ -59,6 +77,8 @@ public class Scrapping {
         }
 
         bufferedWriter.close();
+
+        */
 
     }
 
