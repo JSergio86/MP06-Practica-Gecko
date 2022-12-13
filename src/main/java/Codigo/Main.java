@@ -20,6 +20,8 @@ public class Main {
      * Permite añadir los metodos que hemos creado.
      */
 
+    //Podemos ejecutar el metodo que queramos por ejemplo si solo queremos ver las estadisticas de las armas pues se ejecuta solo ese metodo.
+
     scrapping.VerTodasLasStats(nombre, hastag);
     //scrapping.Jugador(nombre, hastag);
     //scrapping.Armas(nombre, hastag);

@@ -52,8 +52,8 @@ public class Scrapping {
     /**
      * Metodo que permite ver las estadisticas generales del jugador.
      *
-     * @param nombre Nombre del usuario del cual queremos ver las estadisticas
-     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas
+     * @param nombre Nombre del usuario del cual queremos ver las estadisticas.
+     * @param hastag Hashtag del usuario del cual queremos ver las estadisticas.
      * @throws IOException
      */
 
